@@ -43,13 +43,13 @@ class RedisClusterCache(RedisCache):
         BaseCache.__init__(self, default_timeout)
         if isinstance(host, string_types):
             try:
-                from rediscluster import StrictRedisCluster
+                from rediscluster import RedisCluster
             except ImportError:
                 raise RuntimeError('no redis cluster module found')
             if kwargs.get('decode_responses', None):
                 raise ValueError('decode_responses is not supported by '
                                  'RedisClusterCache.')
-            self._client = StrictRedisCluster(host=host,
+            self._client = RedisCluster(host=host,
                                               port=port,
                                               password=password,
                                               **kwargs)
