@@ -18,8 +18,7 @@ app = Flask(__name__)
 class Config(object):
 
     CACHE_TYPE = 'flask_cache_redis_cluster.rediscluster'
-    CACHE_REDIS_HOST = 'redis'
-    CACHE_REDIS_PORT = 6379
+    CACHE_REDIS_NODES = [{"host": "127.0.0.1", "port": "6379"},{"host": "127.0.0.1", "port": "6380"},{"host": "127.0.0.1", "port": "6381"},{"host": "127.0.0.1", "port": "6382"},{"host": "127.0.0.1", "port": "6383"},{"host": "127.0.0.1", "port": "6384"},]
     CACHE_KEY_PREFIX = '<your prefix>'
     # ... other options
 
