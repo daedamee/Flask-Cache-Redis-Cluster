@@ -11,13 +11,8 @@ from werkzeug.contrib.cache import (BaseCache,
 
 def rediscluster(app, config, args, kwargs):
     kwargs.update(dict(
-        host=config.get('CACHE_REDIS_HOST', 'localhost'),
-        port=config.get('CACHE_REDIS_PORT', 6379),
+        startup_nodes=config.get('CACHE_REDIS_NODES', [{"host": "127.0.0.1", "port": "6379"}]),
     ))
-    password = config.get('CACHE_REDIS_PASSWORD')
-    if password:
-        kwargs['password'] = password
-
     key_prefix = config.get('CACHE_KEY_PREFIX')
     if key_prefix:
         kwargs['key_prefix'] = key_prefix
@@ -39,7 +34,7 @@ class RedisClusterCache(RedisCache):
     """
 
     def __init__(self, host='localhost', port=6379, password=None,
-                 default_timeout=300, key_prefix=None, **kwargs):
+                 default_timeout=300, key_prefix=None,startup_nodes=[{"host": "127.0.0.1", "port": "6379"}], **kwargs):
         BaseCache.__init__(self, default_timeout)
         if isinstance(host, string_types):
             try:
@@ -49,9 +44,7 @@ class RedisClusterCache(RedisCache):
             if kwargs.get('decode_responses', None):
                 raise ValueError('decode_responses is not supported by '
                                  'RedisClusterCache.')
-            self._client = RedisCluster(host=host,
-                                              port=port,
-                                              password=password,
+            self._client = RedisCluster(startup_nodes=startup_nodes,
                                               **kwargs)
         else:
             self._client = host
