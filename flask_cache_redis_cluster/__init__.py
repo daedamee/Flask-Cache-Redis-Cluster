@@ -31,11 +31,11 @@ class RedisClusterCache(RedisCache):
     """Uses the Redis key-value store as a cache backend.
     The first argument can be either a string denoting address of the Redis
     server or an object resembling an instance of a
-    ``rediscluster.StrictRedisCluster`` class.
+    ``rediscluster.RedisCluster`` class.
     Note: Python Redis API already takes care of encoding unicode strings on
 
     Any additional keyword arguments will be passed to
-    ``rediscluster.StrictRedisCluster``.
+    ``rediscluster.RedisCluster``.
     """
 
     def __init__(self, host='localhost', port=6379, password=None,
