@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Jan 11 17:27:53 2017
-
 @author: richard
 """
 from werkzeug.contrib.cache import (BaseCache,
@@ -16,7 +15,10 @@ def rediscluster(app, config, args, kwargs):
     key_prefix = config.get('CACHE_KEY_PREFIX')
     if key_prefix:
         kwargs['key_prefix'] = key_prefix
-
+    password = config.get('PASSWORD')
+    if password:
+         kwargs['password'] = password
+    print(kwargs, args)
     return RedisClusterCache(*args, **kwargs)
 
 
@@ -28,12 +30,11 @@ class RedisClusterCache(RedisCache):
     server or an object resembling an instance of a
     ``rediscluster.RedisCluster`` class.
     Note: Python Redis API already takes care of encoding unicode strings on
-
     Any additional keyword arguments will be passed to
     ``rediscluster.RedisCluster``.
     """
 
-    def __init__(self, host='localhost', port=6379, password=None,
+    def __init__(self, host='localhost', port=6379,
                  default_timeout=300, key_prefix=None,startup_nodes=[{"host": "127.0.0.1", "port": "6379"}], **kwargs):
         BaseCache.__init__(self, default_timeout)
         if isinstance(host, string_types):
